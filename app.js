@@ -9,7 +9,7 @@ app.use(cors({
 }))
 
 app.use(express.json())
-app.use(express.urlencoded({limit:"16kb"}))
+app.use(express.urlencoded({extended:true}))
 
 import user_router from "./routes/user.routes.js"
 import pool_router from "./routes/pool.routes.js"

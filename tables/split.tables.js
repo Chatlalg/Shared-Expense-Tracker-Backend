@@ -9,4 +9,11 @@ const split_table = `
     )
 `
 
-export { split_table }
+const insert_into_splits = () => {
+    return `
+        INSERT INTO split (split_amount, borrower_email, expense_id)
+        VALUES ?
+    `
+}
+
+export { split_table, insert_into_splits }

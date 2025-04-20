@@ -14,7 +14,7 @@ const expense_table = `
  * 
  * @param {string} pool_id - pool id
  * @returns `
-        SELECT u.username, u.email, e.expense_id, e.description, e.pool_id, e.creation_date
+        SELECT u.username, u.lender_email, e.expense_id, e.description, e.creation_date
         FROM user as u
         JOIN expense as e
         ON u.email = e.lender_email
@@ -23,7 +23,7 @@ const expense_table = `
  */
 const get_all_expenses = (pool_id) => {
     return `
-        SELECT u.username, u.email, e.expense_id, e.amount, e.description, e.pool_id, e.creation_date
+        SELECT u.username, e.lender_email, e.expense_id, e.amount, e.description, e.creation_date
         FROM user as u
         JOIN expense as e
         ON u.email = e.lender_email
@@ -48,4 +48,11 @@ const get_total_expense = (pool_id) => {
     `
 }
 
-export { expense_table, get_all_expenses, get_total_expense }
+const insert_into_expense = (lender_email,amount, description,pool_id,creation_date) => {
+    return `
+        INSERT INTO expense (lender_email, amount, description, pool_id, creation_date)
+        VALUES ('${lender_email}','${amount}','${description}','${pool_id}','${creation_date}')
+    `
+}
+
+export { expense_table, get_all_expenses, get_total_expense, insert_into_expense }
