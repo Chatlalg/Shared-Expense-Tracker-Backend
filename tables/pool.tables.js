@@ -8,14 +8,11 @@ const pool_table = `
 `
 const get_all_pools = (email) => {
     return `
-        SELECT 
-            p.pool_id,
-            p.pool_name,
-            p.creation_date,
+        SELECT p.pool_id,p.pool_name,p.creation_date,
             (
-            SELECT COUNT(*)
-            FROM pool_members pm2
-            WHERE pm2.pool_id = p.pool_id
+                SELECT COUNT(*)
+                FROM pool_members pm2
+                WHERE pm2.pool_id = p.pool_id
             ) AS total_members
         FROM pool p
         JOIN pool_members pm

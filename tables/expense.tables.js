@@ -5,9 +5,20 @@ const expense_table = `
         description TEXT,
         pool_id INT,
         lender_email VARCHAR(255),
+        creation_date DATE,
         FOREIGN KEY (pool_id) REFERENCES pool(pool_id) ON DELETE CASCADE,
         FOREIGN KEY (lender_email) REFERENCES user(email) ON DELETE CASCADE
     )
 `
 
-export { expense_table }
+const get_all_expenses = (pool_id) => {
+    return `
+        SELECT u.username, u.email, e.expense_id, e.description, e.pool_id, e.creation_date
+        FROM user as u
+        JOIN expense as e
+        ON u.email = e.lender_email
+        WHERE e.pool_id = '${pool_id}'
+    `
+}
+
+export { expense_table, get_all_expenses }
