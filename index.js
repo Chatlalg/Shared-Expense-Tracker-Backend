@@ -7,7 +7,7 @@ dotenv.config({
 })
 
 connectDB()
-app.listen(process.env.PORT,(err)=>{
+app.listen(process.env.PORT,'0.0.0.0',(err)=>{
     if(err) throw new Error(`SERVER DOWN: ${err}`)
     console.log(`Listening on PORT: ${process.env.PORT}`)
 })

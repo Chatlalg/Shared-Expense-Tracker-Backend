@@ -9,4 +9,4 @@ const split_table = `
     )
 `
 
-export default split_table
+export { split_table }
