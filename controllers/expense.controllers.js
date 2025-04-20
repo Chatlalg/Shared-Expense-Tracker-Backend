@@ -1,5 +1,5 @@
 import connection_instance from "../db/connection_instance.js"
-import { get_all_expenses } from "../tables/expense.tables.js"
+import { get_all_expenses, get_total_expense } from "../tables/expense.tables.js"
 
 /**
  * 
@@ -17,4 +17,14 @@ const handle_get_all_expenses = async (req, res, next) => {
     })
 } 
 
-export { handle_get_all_expenses }
+const handle_get_total_expense = async (req,res,next) => {
+    const connection = connection_instance()
+    const { pool_id } = req.body
+    connection.query(get_total_expense(pool_id),(err,results)=>{
+        if(err) return next(err)
+        console.log(results)
+        res.status(200).send(results[0].total_expense)
+    })
+}
+
+export { handle_get_all_expenses, handle_get_total_expense }

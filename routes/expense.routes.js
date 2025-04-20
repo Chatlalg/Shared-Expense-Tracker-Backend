@@ -1,6 +1,6 @@
 import { Router } from "express";
 import error_handler from "../middlewares/error_handler.js";
-import { handle_get_all_expenses } from "../controllers/expense.controllers.js";
+import { handle_get_all_expenses, handle_get_total_expense } from "../controllers/expense.controllers.js";
 
 const router = Router()
 
@@ -10,6 +10,7 @@ router.use((req, res,next) => {
 })
 
 router.route("/fetchall").post(handle_get_all_expenses)
+router.route("/totalexpense").post(handle_get_total_expense)
 
 router.use(error_handler)
 export default router

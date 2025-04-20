@@ -10,10 +10,20 @@ const expense_table = `
         FOREIGN KEY (lender_email) REFERENCES user(email) ON DELETE CASCADE
     )
 `
-
+/**
+ * 
+ * @param {string} pool_id - pool id
+ * @returns `
+        SELECT u.username, u.email, e.expense_id, e.description, e.pool_id, e.creation_date
+        FROM user as u
+        JOIN expense as e
+        ON u.email = e.lender_email
+        WHERE e.pool_id = 'pool_id'
+    `
+ */
 const get_all_expenses = (pool_id) => {
     return `
-        SELECT u.username, u.email, e.expense_id, e.description, e.pool_id, e.creation_date
+        SELECT u.username, u.email, e.expense_id, e.amount, e.description, e.pool_id, e.creation_date
         FROM user as u
         JOIN expense as e
         ON u.email = e.lender_email
@@ -21,4 +31,21 @@ const get_all_expenses = (pool_id) => {
     `
 }
 
-export { expense_table, get_all_expenses }
+/**
+ * 
+ * @param {string} pool_id pool id
+ * @returns `
+        SELECT SUM(amount)
+        FROM expense
+        WHERE pool_id = 'pool_id'
+    `
+ */
+const get_total_expense = (pool_id) => {
+    return `
+        SELECT SUM(amount) as total_expense
+        FROM expense
+        WHERE pool_id = '${pool_id}'
+    `
+}
+
+export { expense_table, get_all_expenses, get_total_expense }
