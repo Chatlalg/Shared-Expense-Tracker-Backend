@@ -23,5 +23,15 @@ const insert_into_pool_members = (email, pool_id) => {
     `
 }
 
-export { pool_members_table, insert_into_pool_members }
+const get_all_members = () => {
+    return `
+        SELECT u.username, pm.email
+        FROM user as u
+        JOIN pool_members as pm
+            ON u.email = pm.email
+        WHERE pm.pool_id = ?
+    `
+}
+
+export { pool_members_table, insert_into_pool_members, get_all_members }
 

@@ -55,4 +55,14 @@ const insert_into_expense = (lender_email,amount, description,pool_id,creation_d
     `
 }
 
-export { expense_table, get_all_expenses, get_total_expense, insert_into_expense }
+const get_expense_borrowers = (expense_id) => {
+    return `
+        SELECT u.username, s.split_amount as share_amount
+        FROM user as u
+        JOIN split as s
+        ON u.email = s.borrower_email
+        WHERE s.expense_id = '${expense_id}'
+    `
+}
+
+export { expense_table, get_all_expenses, get_total_expense, insert_into_expense, get_expense_borrowers }

@@ -1,7 +1,7 @@
 import connection_instance from "../db/connection_instance.js"
 import { check_duplicate_id, get_all_pools, verify_pool_password } from "../tables/pool.tables.js"
 import { insert_into_pool } from "../tables/pool.tables.js"
-import { insert_into_pool_members } from "../tables/pool_members.tables.js"
+import { insert_into_pool_members, get_all_members } from "../tables/pool_members.tables.js"
 import { Random } from "random-js"
 
 /**
@@ -94,12 +94,12 @@ const handle_get_new_pool_id = async (req, res, next) => {
  * @returns {Promise} returns a boolean, true if correct credentials and false otherwise
  */
 const verify_join_credentials = (pool_id, pool_password) => {
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
         console.log(pool_id, pool_password)
         const connection = connection_instance()
-        connection.query(verify_pool_password(pool_id,pool_password),(err,results)=>{
-            if(err) return reject(err)
-            if(results.length == 0) return reject(false)
+        connection.query(verify_pool_password(pool_id, pool_password), (err, results) => {
+            if (err) return reject(err)
+            if (results.length == 0) return reject(false)
             resolve(true)
         })
     })
@@ -115,9 +115,9 @@ const verify_join_credentials = (pool_id, pool_password) => {
 const handle_join_new_pool = async (req, res, next) => {
     const connection = connection_instance()
     const { pool_id, pool_password, email } = req.body
-    if(await verify_join_credentials(pool_id, pool_password)){
-        connection.query(insert_into_pool_members(email,pool_id),(err,results)=>{
-            if(err) return next(err)
+    if (await verify_join_credentials(pool_id, pool_password)) {
+        connection.query(insert_into_pool_members(email, pool_id), (err, results) => {
+            if (err) return next(err)
             res.status(201).json({
                 message: `${email} joined pool : ${pool_id}`
             })
@@ -126,4 +126,15 @@ const handle_join_new_pool = async (req, res, next) => {
 }
 
 
-export { if_pool_id_exists, handle_get_all_pools, handle_create_pool, handle_get_new_pool_id, handle_join_new_pool }
+const handle_get_all_members = async (req, res, next) => {
+    const connection = connection_instance()
+    const { pool_id } = req.body
+    console.log(pool_id)
+    connection.query(get_all_members(), [pool_id], (err,results)=>{
+        if(err) return next(err)
+            console.log(results)
+        res.status(200).json(results)
+    })
+}
+
+export { if_pool_id_exists, handle_get_all_pools, handle_create_pool, handle_get_new_pool_id, handle_join_new_pool, handle_get_all_members }

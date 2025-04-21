@@ -12,4 +12,11 @@ const payment_table = `
     )
 `
 
-export { payment_table }
+const insert_into_payment = () => {
+    return `
+        INSERT INTO payment (pool_id, lender_email, borrower_email, amount)
+        VALUES (?, ?, ?, ?)
+    `
+}
+
+export { payment_table, insert_into_payment }
